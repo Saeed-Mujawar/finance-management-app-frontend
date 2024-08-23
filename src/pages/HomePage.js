@@ -6,6 +6,7 @@ import SignInForm from '../components/SignInForm';
 import AdminPanel from '../components/AdminPanel';
 import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from '../api';
 import Navbar from '../components/Navbar';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const HomePage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,13 +14,17 @@ const HomePage = () => {
   const [authenticated, setAuthenticated] = useState(() => !!localStorage.getItem('authenticated')); 
   const [isSignUpDisabled, setIsSignUpDisabled] = useState(false); 
   const [userRole, setUserRole] = useState(() => localStorage.getItem('role'));
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchTransactions = async () => {
+    setIsLoading(true);
     try {
       const response = await getTransactions();
       setTransactions(response);
     } catch (error) {
       console.error('Failed to fetch transactions', error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,11 +45,14 @@ const HomePage = () => {
   };
 
   const handleDelete = async (id) => {
+    setIsLoading(true);
     try {
       await deleteTransaction(id);
       fetchTransactions();
     } catch (error) {
       console.error('Failed to delete transaction', error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,6 +65,7 @@ const HomePage = () => {
   };
 
   const handleFormSubmit = async (formData) => {
+    setIsLoading(true);
     try {
       if (editingTransaction) {
         await updateTransaction(editingTransaction.id, formData);
@@ -67,6 +76,8 @@ const HomePage = () => {
       fetchTransactions();
     } catch (error) {
       console.error('Failed to submit form', error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,38 +113,39 @@ const HomePage = () => {
             </div>
           </div>
         ) : (
-<>
-  <div className="container mt-4">
-    <div className="row">
-      {userRole === 'admin' && ( 
-        <div className="col-md-8">
-          <div className="border p-4 rounded shadow bg-white">
-            <AdminPanel />
-          </div>
-        </div>
-      )}
-      <div className={userRole === 'admin' ? 'col-md-4' : 'col-12'}>
-        <div className="border p-4 rounded shadow bg-white">
-          <TransactionForm
-            fetchTransactions={fetchTransactions}
-            editingTransaction={editingTransaction}
-            handleFormSubmit={handleFormSubmit}
-            handleCancelEdit={handleCancelEdit}
-          />
-        </div>
-      </div>
-    </div>
-    <div className="border p-4 rounded shadow mb-4 bg-white mt-4">
-      <TransactionTable
-        transactions={transactions}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
-    </div>
-  </div>
-</>
+          <>
+            <div className="container mt-4">
+              <div className="row">
+                {userRole === 'admin' && ( 
+                  <div className="col-md-8">
+                    <div className="border p-4 rounded shadow bg-white">
+                      <AdminPanel />
+                    </div>
+                  </div>
+                )}
+                <div className={userRole === 'admin' ? 'col-md-4' : 'col-12'}>
+                  <div className="border p-4 rounded shadow bg-white">
+                    <TransactionForm
+                      fetchTransactions={fetchTransactions}
+                      editingTransaction={editingTransaction}
+                      handleFormSubmit={handleFormSubmit}
+                      handleCancelEdit={handleCancelEdit}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="border p-4 rounded shadow mb-4 bg-white mt-4">
+                <TransactionTable
+                  transactions={transactions}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </div>
+            </div>
+          </>
 
         )}
+        {isLoading && <LoadingOverlay />}
       </div>
     </div>
   );

@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { UserOutlined, LogoutOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Modal, Form, Input, Button, Typography, notification} from 'antd';
 import { updateUser, deleteUser } from '../api';
+import LoadingOverlay from './LoadingOverlay';
 
 const { Title } = Typography;
 
 const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -44,6 +46,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
   };
 
   const onFinish = async (values) => {
+    setIsLoading(true);
     try {
       await updateUser(localStorage.getItem('userId'), values); 
 
@@ -59,6 +62,8 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
         message: 'Update Failed',
         description: 'There was an error updating your profile. Please try again.',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,6 +79,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
   };
 
   const handleConfirmDelete = async () => {
+    setIsLoading(true);
     try {
      
       await deleteUser(localStorage.getItem('userId')); 
@@ -91,6 +97,8 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
         message: 'Deletion Failed',
         description: 'There was an error deleting your account. Please try again.',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -176,7 +184,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
         </div>
       </Modal>
 
-      
+      {isLoading && <LoadingOverlay/>}
     </>
   );
 };

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, notification } from 'antd';
 import { signIn } from '../api';
+import LoadingOverlay from './LoadingOverlay';
+
 const SignInForm = ({onSuccess}) => {
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = async (values) => {
+    setIsLoading(true);
     try {
       const response = await signIn(values);
       const {id, access_token, username, email, role } = response;
@@ -25,6 +29,8 @@ const SignInForm = ({onSuccess}) => {
         message: 'Login Failed',
         description: 'There was an error logging in. Please check your credentials and try again.',
       });
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,6 +63,8 @@ const SignInForm = ({onSuccess}) => {
           </Button>
         </Form.Item>
       </Form>
+
+      {isLoading && <LoadingOverlay />}
     </div>
   );
 };

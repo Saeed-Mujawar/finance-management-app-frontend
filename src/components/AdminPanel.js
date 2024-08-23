@@ -3,6 +3,7 @@ import { Table, Button, Select, Modal, Form, notification, Empty } from 'antd';
 import { getAllUsers, updateUserRole, deleteUser, getUserWithTransactions } from '../api';
 import { DeleteOutlined, SwapOutlined, SearchOutlined } from '@ant-design/icons';
 import SearchPopover from './SearchPopover';
+import LoadingOverlay from './LoadingOverlay';
 
 const { Option } = Select;
 
@@ -10,6 +11,7 @@ const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm(); 
   const [searchText, setSearchText] = useState(''); 
   const [selectedRole, setSelectedRole] = useState(null);
@@ -28,6 +30,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setIsLoading(true);
       try {
         const usersData = await getAllUsers();
         const filteredUsers = usersData
@@ -37,6 +40,8 @@ const AdminPanel = () => {
         setUsers(filteredUsers);
       } catch (error) {
         console.error('Failed to fetch users', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -49,6 +54,7 @@ const AdminPanel = () => {
   };
 
   const handleOk = async () => {
+    setIsLoading(true);
     try {
       const values = await form.validateFields(); 
       if (selectedUser) {
@@ -61,6 +67,8 @@ const AdminPanel = () => {
       }
     } catch (error) {
       console.error('Failed to update user role:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,6 +89,7 @@ const AdminPanel = () => {
   };
 
   const handleConfirmDelete = async (userId) => {
+    setIsLoading(true);
     try {
         await deleteUser(userId); 
         notification.success({
@@ -95,6 +104,8 @@ const AdminPanel = () => {
             message: 'Deletion Failed',
             description: 'There was an error deleting your account. Please try again.',
         });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -115,6 +126,7 @@ const AdminPanel = () => {
   };
 
   const handleShowTransactions = async (userId) => {
+    setIsLoading(true);
     try {
       const user = await getUserWithTransactions(userId);
       setUserTransactions(user.transactions);
@@ -125,6 +137,8 @@ const AdminPanel = () => {
         message: 'Error',
         description: 'Failed to fetch transactions.',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -250,6 +264,8 @@ const AdminPanel = () => {
             locale={{ emptyText: <Empty description="No Transactions" /> }}
           />
         </Modal>
+
+        {isLoading && <LoadingOverlay />}
     </div>
   );
 };

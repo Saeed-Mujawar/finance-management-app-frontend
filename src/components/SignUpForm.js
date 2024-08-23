@@ -2,14 +2,17 @@ import React from 'react';
 import { Form, Input, Button, notification, Modal } from 'antd';
 import { useState } from 'react';
 import { signUp, verifyOtp } from '../api';
+import LoadingOverlay from './LoadingOverlay';
 
 const SignUpForm = ({ onSuccess, disabled }) => {
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [tempUserId, setTempUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = async (values) => {
+    setIsLoading(true);
     try {
       const response = await signUp(values);
       setTempUserId(response.temp_user_id);
@@ -19,10 +22,13 @@ const SignUpForm = ({ onSuccess, disabled }) => {
         message: 'Signup Failed',
         description: error.message || 'There was an error signing up. Please try again.'
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleOtpSubmit = async (otpValues) => {
+    setIsLoading(true);
     try {
       
       await verifyOtp({ tempUserId, otp: otpValues.otp });
@@ -39,6 +45,8 @@ const SignUpForm = ({ onSuccess, disabled }) => {
         message: 'OTP Verification Failed',
         description: error.message || 'Invalid OTP. Please try again.',
       });
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,6 +111,7 @@ const SignUpForm = ({ onSuccess, disabled }) => {
           </Form.Item>
         </Form>
       </Modal>
+      {isLoading && <LoadingOverlay />}
     </div>
   );
 };
