@@ -132,14 +132,14 @@ const HomePage = () => {
             <div className="container mt-4">
               <div className="row">
                 {userRole === 'admin' && ( 
-                  <div className="col-md-8">
+                  <div className="col-md-8 mb-4 mb-md-0">
                     <div className="border p-4 rounded shadow bg-white">
                       <AdminPanel />
                     </div>
                   </div>
                 )}
                 <div className={userRole === 'admin' ? 'col-md-4' : 'col-12'}>
-                  <div className="border p-4 rounded shadow bg-white">
+                  <div className="border p-4 rounded shadow bg-white ">
                     <TransactionForm
                       fetchTransactions={fetchTransactions}
                       editingTransaction={editingTransaction}
