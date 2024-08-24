@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button, Popover, Radio, Space, DatePicker } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import './styles.css';
 
 const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibleChange, searchApplied }) => {
   const [searchText, setSearchText] = useState('');
@@ -35,6 +36,7 @@ const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibl
     onSearch(e.target.value);
     onVisibleChange(false); 
   };
+
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
     onSearch(e.target.value);
@@ -44,7 +46,7 @@ const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibl
   return (
     <Popover
       content={
-        <div>
+        <div className="popover-content">
           {type === 'amount' && (
             <>
               <Input
@@ -94,7 +96,7 @@ const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibl
             </>
           )}
           {type === 'is_income' && (
-            <Space direction="vertical">
+            <Space direction="vertical" style={{ width: '100%' }}>
               <Radio.Group onChange={handleIncomeChange} value={isIncome}>
                 <Radio value={true}>Income</Radio>
                 <Radio value={false}>Expense</Radio>
@@ -121,7 +123,7 @@ const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibl
             </>
           )}
           {type === 'role' && (
-            <Space direction="vertical">
+            <Space direction="vertical" style={{ width: '100%' }}>
               <Radio.Group onChange={handleRoleChange} value={selectedRole}>
                 <Radio value="admin">Admin</Radio>
                 <Radio value="user">User</Radio>

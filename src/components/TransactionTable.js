@@ -2,10 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Table, Empty, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import SearchPopover from './SearchPopover';
+import './styles.css';
 
 const TransactionTable = ({ transactions, onEdit, onDelete }) => {
   const [filteredData, setFilteredData] = useState(transactions);
-
   const [popoverVisible, setPopoverVisible] = useState({
     amount: false,
     category: false,
@@ -156,11 +156,10 @@ const TransactionTable = ({ transactions, onEdit, onDelete }) => {
           />
           <Button
             type="text"
-            
+            danger
             icon={<DeleteOutlined />}
             onClick={() => onDelete(record.id)}
             aria-label="Delete"
-            style={{ marginLeft: 8 }}
           />
         </div>
       ),
@@ -168,15 +167,20 @@ const TransactionTable = ({ transactions, onEdit, onDelete }) => {
   ], [transactions, popoverVisible, searchApplied]);
 
   return (
-    <Table
-      columns={columns}
-      dataSource={filteredData}
-      rowKey="id"
-      pagination={{ pageSize: 7 }}
-      bordered
-      className="table table-bordered"
-      locale={{ emptyText: <Empty description="No Data" /> }}
-    />
+    <div className="transaction-table-container">
+      <h4 className="bg-primary text-white p-3 rounded mb-4 text-center">Transaction Records</h4>
+      <div className="table-container">
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          pagination={{ pageSize: 7 }}
+          bordered
+          className="table-bordered"
+          locale={{ emptyText: <Empty description="No Data" /> }}
+        />
+      </div>
+    </div>
   );
 };
 

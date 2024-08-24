@@ -7,6 +7,8 @@ import AdminPanel from '../components/AdminPanel';
 import { getTransactions, createTransaction, updateTransaction, deleteTransaction } from '../api';
 import Navbar from '../components/Navbar';
 import LoadingOverlay from '../components/LoadingOverlay';
+import { Modal } from 'antd';
+
 
 const HomePage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -44,16 +46,24 @@ const HomePage = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    setIsLoading(true);
-    try {
-      await deleteTransaction(id);
-      fetchTransactions();
-    } catch (error) {
-      console.error('Failed to delete transaction', error);
-    }finally {
-      setIsLoading(false);
-    }
+  const handleDelete = (id) => {
+    Modal.confirm({
+      title: 'Are you sure you want to delete this record ?',
+      okText: 'Yes, delete it',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        setIsLoading(true);
+        try {
+          await deleteTransaction(id);
+          fetchTransactions();
+        } catch (error) {
+          console.error('Failed to delete transaction:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    });
   };
 
   const handleEdit = (transaction) => {
@@ -88,6 +98,11 @@ const HomePage = () => {
   const handleSignInSuccess = () => {
     setAuthenticated(true); 
     localStorage.setItem('authenticated', 'true');
+
+    setTimeout(() => {
+      setAuthenticated(false);
+      localStorage.clear();
+    }, 3600000);
 
   };
 

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { UserOutlined, LogoutOutlined, DeleteOutlined} from '@ant-design/icons';
-import { Modal, Form, Input, Button, Typography, notification} from 'antd';
+import { UserOutlined, LogoutOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, Button, Typography, notification } from 'antd';
 import { updateUser, deleteUser } from '../api';
 import LoadingOverlay from './LoadingOverlay';
+import './styles.css'; 
 
 const { Title } = Typography;
 
-const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
+const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (isModalVisible) {    
+    if (isModalVisible) {
       fetchUserData();
     }
   }, [isModalVisible, form]);
@@ -48,7 +49,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
   const onFinish = async (values) => {
     setIsLoading(true);
     try {
-      await updateUser(localStorage.getItem('userId'), values); 
+      await updateUser(localStorage.getItem('userId'), values);
 
       notification.success({
         message: 'Profile Updated',
@@ -81,8 +82,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
   const handleConfirmDelete = async () => {
     setIsLoading(true);
     try {
-     
-      await deleteUser(localStorage.getItem('userId')); 
+      await deleteUser(localStorage.getItem('userId'));
       notification.success({
         message: 'Account Deleted',
         description: 'Your account and transactions have been deleted.',
@@ -90,7 +90,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
       localStorage.clear();
       setAuthenticated(false);
       setIsModalVisible(false);
-      setIsSignUpDisabled(false)
+      setIsSignUpDisabled(false);
       navigate('/');
     } catch (error) {
       notification.error({
@@ -102,15 +102,13 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
     }
   };
 
-
-
   return (
     <>
-      <nav className='navbar navbar-dark bg-primary sticky-top'>
+      <nav className='navbar navbar-dark sticky-top'>
         <div className='container-fluid'>
           <a className='navbar-brand'>
-            <span style={{ fontWeight: 'bold', fontSize: '1.5em' }}>Spend Smart</span>
-            <span style={{ fontSize: '1em', marginLeft: '10px' }}>- Track | Save | Grow</span>
+            <span>Spend Smart</span>
+            <span>- Track | Save | Grow</span>
           </a>
           <div className='d-flex align-items-center ml-auto m-3'>
             {authenticated && (
@@ -163,7 +161,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
 
           <Button
             className='btn-hover'
-            type='text'
+            type='link'
             onClick={handleSignOut}
             icon={<LogoutOutlined />}
             style={{ marginTop: '20px' }}
@@ -172,8 +170,9 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
           </Button>
 
           <Button
-            className=' btn-hover'
-            type='text'
+            className='btn-hover'
+            type='link'
+            danger
             onClick={handleDelete}
             icon={<DeleteOutlined />}
             style={{ marginTop: '20px' }}
@@ -184,7 +183,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled}) => {
         </div>
       </Modal>
 
-      {isLoading && <LoadingOverlay/>}
+      {isLoading && <LoadingOverlay />}
     </>
   );
 };

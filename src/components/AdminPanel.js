@@ -4,6 +4,7 @@ import { getAllUsers, updateUserRole, deleteUser, getUserWithTransactions } from
 import { DeleteOutlined, SwapOutlined, SearchOutlined } from '@ant-design/icons';
 import SearchPopover from './SearchPopover';
 import LoadingOverlay from './LoadingOverlay';
+import './styles.css';
 
 const { Option } = Select;
 
@@ -77,7 +78,7 @@ const AdminPanel = () => {
   const handleDelete = (userId) => {
     Modal.confirm({
       title: 'Are you sure you want to delete this account?',
-      content: 'This action cannot be undone. All user related  data will be permanently removed.',
+      content: 'This action cannot be undone. All user related data will be permanently removed.',
       okText: 'Yes, delete it',
       okType: 'danger',
       cancelText: 'Cancel',
@@ -129,6 +130,7 @@ const AdminPanel = () => {
     setIsLoading(true);
     try {
       const user = await getUserWithTransactions(userId);
+      setSelectedUser(user);
       setUserTransactions(user.transactions);
       setTransactionsModalVisible(true);
     } catch (error) {
@@ -142,7 +144,7 @@ const AdminPanel = () => {
     }
   };
   
-  const columns =useMemo(()=> [
+  const columns = useMemo(() => [
     { 
         title: (
             <div className="d-flex justify-content-between align-items-center">
@@ -161,7 +163,6 @@ const AdminPanel = () => {
           ),
           dataIndex: 'username',
           key: 'username',
-
     },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: (
@@ -186,26 +187,25 @@ const AdminPanel = () => {
       title: 'Actions',
       key: 'action',
       render: (text, record) => (
-        <div>
+        <div className="button-container">
           <Button icon={<SwapOutlined />} onClick={() => showModal(record)}>
             Role
           </Button>
           <Button
-            style={{ marginLeft: '8px' }}
             onClick={() => handleShowTransactions(record.id)}            
           >
             Transactions
           </Button>
           <Button 
             type="text" 
+            danger
             icon={<DeleteOutlined />} 
             onClick={() => handleDelete(record.id)} 
-            style={{ marginLeft: '8px' }}
           />
         </div>
       ),
     },
-  ],[users, popoverVisible, searchApplied]);
+  ], [users, popoverVisible, searchApplied]);
   
   const transactionColumns = [
     { title: 'Amount', dataIndex: 'amount', key: 'amount' },
@@ -214,18 +214,20 @@ const AdminPanel = () => {
     { title: 'Date', dataIndex: 'date', key: 'date' },
   ];
 
-
   return (
-    <div>
-        <Table 
-            dataSource={users} 
-            columns={columns} 
-            rowKey="id" 
-            pagination={{ pageSize: 7 }}
-            bordered
-            className="table table-bordered"
-            locale={{ emptyText: <Empty description="No Data" /> }}
-        />
+    <div className="admin-panel-container">
+      <h4 className="bg-primary text-white p-3 rounded mb-4 text-center">Admin Panel</h4>
+        <div className="table-container">
+          <Table 
+              dataSource={users} 
+              columns={columns} 
+              rowKey="id" 
+              pagination={{ pageSize: 7 }}
+              bordered
+              className="table-bordered"
+              locale={{ emptyText: <Empty description="No Data" /> }}
+          />
+        </div>
         <Modal
             title="Change User Role"
             visible={isModalVisible}
@@ -233,23 +235,23 @@ const AdminPanel = () => {
             onCancel={handleCancel}
         >
             <Form
-            form={form} 
-            initialValues={{ role: selectedUser?.role }} 
+              form={form} 
+              initialValues={{ role: selectedUser?.role }} 
             >
-            <Form.Item
+              <Form.Item
                 label="Role"
                 name="role" 
                 rules={[{ required: true, message: 'Please select a role!' }]}
-            >
+              >
                 <Select>
-                <Option value="admin">Admin</Option>
-                <Option value="user">User</Option>
+                  <Option value="admin">Admin</Option>
+                  <Option value="user">User</Option>
                 </Select>
-            </Form.Item>
+              </Form.Item>
             </Form>
         </Modal>
         <Modal
-          title={`Transactions for ${selectedUser?.username}`}
+          title={`Transaction history of - ${selectedUser?.username}`}
           visible={transactionsModalVisible}
           onCancel={() => setTransactionsModalVisible(false)}
           footer={null}
@@ -260,7 +262,7 @@ const AdminPanel = () => {
             rowKey="id"
             pagination={{ pageSize: 5 }}
             bordered
-            className="table table-bordered"
+            className="table-container"
             locale={{ emptyText: <Empty description="No Transactions" /> }}
           />
         </Modal>

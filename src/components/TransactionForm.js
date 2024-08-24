@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Checkbox, Button, DatePicker, Select } from 'antd';
 import dayjs from 'dayjs';
+import './styles.css';
 
 const { Option } = Select;
 
@@ -56,6 +57,9 @@ const TransactionForm = ({ fetchTransactions, editingTransaction, handleFormSubm
       onFinish={handleFinish}
       layout="vertical"
     >
+      <h4 className="bg-primary text-white p-3 rounded mb-4 text-center">
+        {editingTransaction ? "Update Transaction Form" : "Transaction Entry Form"}
+      </h4>
       <Form.Item
         name="amount"
         label="Transaction Amount"
@@ -91,6 +95,7 @@ const TransactionForm = ({ fetchTransactions, editingTransaction, handleFormSubm
       <Form.Item
         name="description"
         label="Transaction Description"
+        rules={[{ required: true, message: 'Please specify the Description!' }]}
       >
         <Input />
       </Form.Item>
@@ -122,10 +127,11 @@ const TransactionForm = ({ fetchTransactions, editingTransaction, handleFormSubm
             </Button>
           </>
         ) : (
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{ marginLeft: '8px' }}>
             Submit
           </Button>
         )}
+
       </Form.Item>
     </Form>
   );
