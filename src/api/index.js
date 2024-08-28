@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const API_URL = 'https://finance-management-app-backend-lczn.onrender.com';
+// const API_URL = 'http://localhost:8000';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -15,6 +16,31 @@ export const signUp = async (userData) => {
     } catch (error) {
         throw new Error(error.response?.data?.detail || "Sign Up failed");
     }
+};
+
+// Forgot Password API call
+export const forgotPassword = async (email) => {
+  try {
+      const response = await api.post('/auth/forgot-password', { email });
+      return response.data;
+  } catch (error) {
+      throw new Error(error.response?.data?.detail || "Failed to send OTP");
+  }
+};
+
+// Reset Password API call
+export const resetPassword = async ({tempUserId, otp, new_password}) => {
+  try {
+      const response = await api.post('/auth/reset-password', {
+          temp_user_id: tempUserId,
+          otp,
+          new_password
+
+      });
+      return response.data;
+  } catch (error) {
+      throw new Error(error.response?.data?.detail || "Password reset failed");
+  }
 };
 
 // Verify OTP API call

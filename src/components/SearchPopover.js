@@ -98,8 +98,8 @@ const SearchPopover = ({ type, onSearch, onReset, placeholder, visible, onVisibl
           {type === 'is_income' && (
             <Space direction="vertical" style={{ width: '100%' }}>
               <Radio.Group onChange={handleIncomeChange} value={isIncome}>
-                <Radio value={true}>Income</Radio>
-                <Radio value={false}>Expense</Radio>
+                <Radio value={true}>Received</Radio>
+                <Radio value={false}>Spent</Radio>
               </Radio.Group>
               <Button onClick={handleReset} type="link" style={{ marginTop: 8 }}>
                 Reset

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Checkbox, Button, DatePicker, Select } from 'antd';
+import { Form, Input, Checkbox, Button, DatePicker, Select, Radio } from 'antd';
 import dayjs from 'dayjs';
 import './styles.css';
 
@@ -102,10 +102,13 @@ const TransactionForm = ({ fetchTransactions, editingTransaction, handleFormSubm
 
       <Form.Item
         name="is_income"
-        valuePropName="checked"
-        label="Is Income?"
+        label="Type"
+        rules={[{ required: true, message: 'Please select the type!' }]}
       >
-        <Checkbox />
+        <Radio.Group>
+          <Radio value={true}>Received</Radio>
+          <Radio value={false}>Spent</Radio>
+        </Radio.Group>
       </Form.Item>
 
       <Form.Item

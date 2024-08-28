@@ -8,7 +8,7 @@ import { getTransactions, createTransaction, updateTransaction, deleteTransactio
 import Navbar from '../components/Navbar';
 import LoadingOverlay from '../components/LoadingOverlay';
 import { Modal } from 'antd';
-
+import './HomePage.css'
 
 const HomePage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -107,12 +107,17 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className="home-page">
       <Navbar authenticated={authenticated} setAuthenticated={setAuthenticated} setIsSignUpDisabled={setIsSignUpDisabled}/>
       <div className='container d-flex flex-column align-items-center'>
         {!authenticated ? (
-          <div className='row w-100 justify-content-center p-3'>
-            <div className='col-md-5 d-flex justify-content-center mb-4'>
+          <div className='row w-100 justify-content-center p-3'>  
+            <section className='about-section mb-5'>
+              <h3 className='section-title'>Simplify Your Financial Tracking with Our Transaction Management App</h3>
+              <p className='section-text'>Our application is designed to make tracking your financial transactions a breeze. Whether you’re managing personal expenses or monitoring income, our user-friendly platform helps you keep everything organized.</p>
+              <p className='section-text'>With our app, you can effortlessly categorize and record each transaction, making it simple to review your financial history and stay on top of your budget. Experience a streamlined approach to financial management designed to meet your everyday needs.</p>
+            </section>          
+            <div className='hover-container col-md-5 d-flex justify-content-center mb-4'>
               <div
                 className='border p-4 rounded shadow bg-white'
                 style={{ width: '100%', opacity: isSignUpDisabled ? 0.5 : 1, pointerEvents: isSignUpDisabled ? 'none' : 'auto' }}
@@ -121,24 +126,25 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className='col-md-5 d-flex justify-content-center mb-4'>
+            <div className='hover-container col-md-5 d-flex justify-content-center mb-4'>
               <div className='border p-4 rounded shadow bg-white' style={{ width: '100%' }}>
                 <SignInForm onSuccess={handleSignInSuccess} />
               </div>
             </div>
+            
           </div>
         ) : (
           <>
             <div className="container mt-4">
               <div className="row">
                 {userRole === 'admin' && ( 
-                  <div className="col-md-8 mb-4 mb-md-0">
+                  <div className="hover-container col-md-8 mb-4 mb-md-0">
                     <div className="border p-4 rounded shadow bg-white">
                       <AdminPanel />
                     </div>
                   </div>
                 )}
-                <div className={userRole === 'admin' ? 'col-md-4' : 'col-12'}>
+                <div className={userRole === 'admin' ? 'hover-container col-md-4' : 'hover-container col-12'}>
                   <div className="border p-4 rounded shadow bg-white ">
                     <TransactionForm
                       fetchTransactions={fetchTransactions}
@@ -149,7 +155,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="border p-4 rounded shadow mb-4 bg-white mt-4">
+              <div className="hover-container border p-4 rounded shadow mb-4 bg-white mt-4">
                 <TransactionTable
                   transactions={transactions}
                   onEdit={handleEdit}
@@ -162,6 +168,9 @@ const HomePage = () => {
         )}
         {isLoading && <LoadingOverlay />}
       </div>
+      <footer className="footer bg-body-tertiary text-center ">
+        <p>&copy; {new Date().getFullYear()} Copyright: Finance App | All rights reserved.</p>
+      </footer>
     </div>
   );
 };

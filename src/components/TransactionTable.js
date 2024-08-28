@@ -109,7 +109,7 @@ const TransactionTable = ({ transactions, onEdit, onDelete }) => {
     {
       title: (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          Is Income?
+          Type
           <SearchPopover
             type="is_income"
             onSearch={handleSearchIsIncome}
@@ -123,7 +123,7 @@ const TransactionTable = ({ transactions, onEdit, onDelete }) => {
       ),
       dataIndex: 'is_income',
       key: 'is_income',
-      render: (text) => (text ? 'Yes' : 'No'),
+      render: (text) => (text ? 'Received' : 'Spent'),
     },
     {
       title: (

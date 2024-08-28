@@ -211,6 +211,12 @@ const AdminPanel = () => {
     { title: 'Amount', dataIndex: 'amount', key: 'amount' },
     { title: 'Category', dataIndex: 'category', key: 'category' },
     { title: 'Description', dataIndex: 'description', key: 'description' },
+    { 
+      title: 'Type', 
+      dataIndex: 'is_income', 
+      key: 'is_income',
+      render: (isIncome) => (isIncome ? 'Received' : 'Spent') 
+    },
     { title: 'Date', dataIndex: 'date', key: 'date' },
   ];
 
