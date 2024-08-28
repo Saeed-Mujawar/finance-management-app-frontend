@@ -1,57 +1,46 @@
-/* Add this CSS to your stylesheet or style component */
 
 .about-section {
-    background-color: #f8f9fc; /* Light grayish background for a clean look */
-    padding: 2rem; /* Add some padding for spacing */
-    border-radius: 8px; /* Rounded corners for a modern touch */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    max-width: 800px; /* Limit the width for better readability */
-    margin: 0 auto; /* Center the section horizontally */
+    background-color: #f8f9fc; 
+    padding: 2rem; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    max-width: 800px; 
+    margin: 0 auto;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
 
 .about-section:hover {
-    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  */
-    transform: translateY(-5px); /* Slight lift effect */
-}
-
-.hover-container{
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.hover-container:hover {
-    
-    transform: translateY(-5px); /* Slight lift effect */
+    transform: scale(1.05);
 }
   
   .section-title {
-    background-color: #007bff; /* Bright blue background */
-    color: white; /* White text for contrast */
-    padding: 1rem; /* Padding for space around text */
-    border-radius: 8px; /* Rounded corners for the title */
-    text-align: center; /* Center the text */
-    font-size: 1.25rem; /* Adjust font size */
-    margin-bottom: 1.5rem; /* Space below the title */
+    background-color: #007bff;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px; 
+    text-align: center; 
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem; 
     transition: background-color 0.3s ease;
   }
 
   .section-title:hover {
-    background-color: #0056b3; /* Darker blue background on hover */
+    background-color: #0056b3;
   }
   
   .section-text {
-    color: #333; /* Dark gray text for readability */
-    line-height: 1.6; /* Improved line spacing for better readability */
-    margin-bottom: 1rem; /* Space below paragraphs */
+    color: #333; 
+    line-height: 1.6; 
+    margin-bottom: 1rem;
   }
   
   @media (max-width: 768px) {
     .about-section {
-      padding: 1rem; /* Adjust padding for smaller screens */
+      padding: 1rem;
     }
   
     .section-title {
-      font-size: 1.1rem; /* Adjust font size for smaller screens */
+      font-size: 1.1rem; 
     }
   }
   

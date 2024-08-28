@@ -8,7 +8,6 @@ const SignInForm = ({onSuccess}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isForgotPasswordModalVisible, setIsForgotPasswordModalVisible] = useState(false);
   const [isOtpModalVisible, setIsOtpModalVisible] = useState(false);
-  const [isPasswordResetLoading, setIsPasswordResetLoading] = useState(false);
   const [tempUserId, setTempUserId] = useState('');
   const [otpForm] = Form.useForm();
   const [resetPasswordForm] = Form.useForm();
@@ -59,7 +58,7 @@ const SignInForm = ({onSuccess}) => {
 
   // Handle OTP submission
   const handleOtpSubmit = async (values) => {
-    setIsPasswordResetLoading(true);
+    setIsLoading(true);
     try {
       await resetPassword({
         tempUserId,
@@ -81,7 +80,7 @@ const SignInForm = ({onSuccess}) => {
         description: 'There was an error resetting your password. Please try again.',
       });
     } finally {
-      setIsPasswordResetLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -138,7 +137,7 @@ const SignInForm = ({onSuccess}) => {
         </Form.Item>
       </Form>
 
-      {isLoading && <LoadingOverlay />}
+      
       {/* Forgot Password Modal */}
       <Modal
         title="Forgot Password"
@@ -159,7 +158,7 @@ const SignInForm = ({onSuccess}) => {
             <Input />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-100" loading={isLoading}>
+            <Button type="primary" htmlType="submit" className="w-100">
               Send OTP
             </Button>
           </Form.Item>
@@ -194,12 +193,13 @@ const SignInForm = ({onSuccess}) => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-100" loading={isPasswordResetLoading}>
+            <Button type="primary" htmlType="submit" className="w-100">
               Reset Password
             </Button>
           </Form.Item>
         </Form>
       </Modal>
+      {isLoading && <LoadingOverlay />}
     </div>
   );
 };

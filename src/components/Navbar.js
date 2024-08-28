@@ -157,7 +157,7 @@ const Navbar = ({ authenticated, setAuthenticated, setIsSignUpDisabled }) => {
             <span>Spend Smart</span>
             <span>- Track | Save | Grow</span>
           </a>
-          <div className='d-flex align-items-center ml-auto m-3'>
+          <div className='profile-hover d-flex align-items-center ml-auto m-3'>
             {authenticated && (
               <span className='text-white' onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
                 <UserOutlined style={{ fontSize: '1.4em' }} />

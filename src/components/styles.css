@@ -1,6 +1,4 @@
-/* styles.css */
 
-/* General Container Styles */
 .container {
     padding: 16px;
     max-width: 1200px;
@@ -23,7 +21,6 @@
 
 
 
-/* Popover Styles */
 .popover-content {
     padding: 16px;
     max-width: 300px; 
@@ -33,7 +30,6 @@
     width: 100%;
 }
 
-/* Navbar Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -45,10 +41,23 @@
 .navbar-brand {
     font-size: 1.5em;
     font-weight: bold;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .navbar-brand span {
     margin-left: 10px;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.1);
+}
+
+.profile-hover{
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.profile-hover:hover {
+    transform: scale(1.1);
 }
 
 .navbar .d-flex {
@@ -153,38 +162,38 @@
     }
 }
 
-/* styles.css */
 
-/* Container for buttons */
+
+
 .button-container {
     display: flex;
     align-items: center;
-    gap: 8px; /* Space between buttons */
+    gap: 8px; 
 }
 
-/* General button styling */
+
 .button-container .ant-btn {
-    margin-left: 0; /* Remove default left margin for consistency */
+    margin-left: 0; 
 }
 
-/* Responsive styles */
+
 @media (max-width: 768px) {
     .button-container {
-        flex-direction: column; /* Stack buttons vertically on smaller screens */
-        gap: 4px; /* Reduce space between buttons */
+        flex-direction: column; 
+        gap: 4px; 
     }
 
     .button-container .ant-btn {
-        width: 100%; /* Make buttons full-width in column layout */
+        width: 100%;
     }
 }
 
 @media (max-width: 576px) {
     .button-container {
-        gap: 2px; /* Further reduce space between buttons*/
+        gap: 2px; 
     }
 
     .button-container .ant-btn {
-        font-size: 0.875em; /* Adjust font size for smaller screens */
+        font-size: 0.875em; 
     }
 }
